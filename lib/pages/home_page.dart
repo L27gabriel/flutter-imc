@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imc/components/input.dart';
 import 'package:imc/components/my_drawer.dart';
-import 'package:imc/components/my_radio.dart';
 import 'package:imc/models/person.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController heightPersonController = TextEditingController();
   TextEditingController weightPersonController = TextEditingController();
 
-  String selectedValue = "";
+  String selectedValue = "feminino";
 
   String result = "";
 
@@ -46,7 +45,41 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const MyRadio(),
+            Column(
+              children: [
+                const Text(
+                  "Qual seu sexo?",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                RadioListTile(
+                    title: const Text(
+                      "Feminino",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    value: "feminino",
+                    groupValue: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value!;
+                      });
+                    }),
+                RadioListTile(
+                    title: const Text(
+                      "Masculino",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    value: "masculino",
+                    groupValue: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value!;
+                      });
+                    }),
+              ],
+            ),
             Input(
               controller: heightPersonController,
               labelText: "Altura",
@@ -73,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   if (validate()) {
                     var person = Person(
-                        "masculino",
+                        selectedValue,
                         double.parse(heightPersonController.text),
                         double.parse(weightPersonController.text));
 
