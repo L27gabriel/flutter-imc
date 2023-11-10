@@ -19,6 +19,15 @@ class _HomePageState extends State<HomePage> {
 
   String result = "";
 
+  bool validate() {
+    if (heightPersonController.text == "" &&
+        weightPersonController.text == "") {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +47,19 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const MyRadio(),
-            Input(controller: heightPersonController, labelText: "Altura"),
+            Input(
+              controller: heightPersonController,
+              labelText: "Altura",
+              textInputType: TextInputType.number,
+            ),
             const SizedBox(
               height: 10,
             ),
-            Input(controller: weightPersonController, labelText: "Peso"),
+            Input(
+              controller: weightPersonController,
+              labelText: "Peso",
+              textInputType: TextInputType.number,
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -54,13 +71,19 @@ class _HomePageState extends State<HomePage> {
                   padding: MaterialStatePropertyAll(EdgeInsets.all(20)),
                 ),
                 onPressed: () {
-                  var person = Person(
-                      "masculino",
-                      double.parse(heightPersonController.text),
-                      double.parse(weightPersonController.text));
+                  if (validate()) {
+                    var person = Person(
+                        "masculino",
+                        double.parse(heightPersonController.text),
+                        double.parse(weightPersonController.text));
 
-                  result = person.calculateImc(person);
-                  setState(() {});
+                    result = person.calculateImc(person);
+                    setState(() {});
+                  } else {
+                    setState(() {
+                      result = "Preencha todos os campos";
+                    });
+                  }
                 },
                 child: const Text(
                   "Calcular",
